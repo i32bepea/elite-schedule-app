@@ -37,6 +37,7 @@ export class TournamentsPage {
         loader.dismiss();
       });
     });
+
   }
 
   itemTapped($event, tourney){
