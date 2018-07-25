@@ -7,20 +7,16 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Teams</ion-title>
+    <ion-title>Equipos</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content>
-    <ion-list>
-        <button ion-item (click)="itemTapped()">
-          HC Elite
-        </button>
-    
-        <button ion-item (click)="itemTapped()">
-          Team Takeover
-        </button>
-      </ion-list>
+  <ion-list>
+    <button *ngFor="let team of teams" ion-item (click)="itemTapped($event, team)">
+      {{team.name}}
+    </button>
+  </ion-list>
 </ion-content>
