@@ -30,7 +30,7 @@
     <ion-item *ngFor="let game of games" (click)="gameClicked($event, game)">
       <ion-row>
         <ion-col col-3>
-          <p>{{game.time | date:'D/m/yy'}}</p>
+          <p>{{game.time | date:'d/M/yy'}}</p>
           <p>{{game.time | date:'shortTime'}}</p>
         </ion-col>
         <ion-col col-6>
