@@ -23,7 +23,7 @@ ionViewDidLoad(){
     let selectedTourney = this.navParams.data;
 
     let loader = this.loadingController.create({
-      content: 'Getting data...'
+      content: 'Obteniendo información...'
     });
 
     loader.present().then(() => {
