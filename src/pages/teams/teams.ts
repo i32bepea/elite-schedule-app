@@ -19,7 +19,7 @@ export class TeamsPage {
               private navParams: NavParams,
               private eliteApi: EliteApi) { }
 
-  ionViewLoaded(){
+ionViewDidLoad(){
     let selectedTourney = this.navParams.data;
 
     let loader = this.loadingController.create({
@@ -37,7 +37,6 @@ export class TeamsPage {
             .value();
 
         this.teams = this.allTeamDivisions;
-        console.log('division teams', this.teams); 
         loader.dismiss();
       });
     });
