@@ -11,6 +11,7 @@ import * as _ from 'lodash';
 export class StandingsPage {
 
   public allStandings: any[];
+  public divisionFilter = 'division';
   public standings: any[];
   public team: any;
 
@@ -29,7 +30,8 @@ export class StandingsPage {
         .toPairs()
         .map(item => _.zipObject(['divisionName', 'divisionTeams'], item))
         .value();
-*/
+*/  
+    this.filterDivision();
     }
 
   ionViewDidLoad() {
@@ -41,6 +43,15 @@ export class StandingsPage {
       return record.division;
     }
     return null;
+  }
+
+  filterDivision(){
+    if(this.divisionFilter === 'all'){
+      this.standings = this.allStandings;
+    }
+    else{
+      this.standings = _.filter(this.allStandings, s=> s.division===this.team.division);
+    }
   }
 
 }

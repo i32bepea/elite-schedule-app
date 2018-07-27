@@ -96,8 +96,8 @@ export class TeamDetailPage {
 
   gameClicked($event, game){
     let sourceGame = this.tourneyData.games.find(g => g.id === game.gameId);
-    this.navCtrl.push(GamePage, sourceGame);
-  }
+    this.navCtrl.parent.parent.push(GamePage, sourceGame);
+  } 
 
   getScoreWorL(game) {
     return game.scoreDisplay ? game.scoreDisplay[0] : '';

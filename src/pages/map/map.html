@@ -1,0 +1,19 @@
+
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Mapa</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <agm-map [latitude]="map.lat" [longitude]="map.lng" [zoom]="map.zoom">
+    <agm-marker [latitude]="map.lat" [longitude]="map.lng">
+
+    </agm-marker>
+  </agm-map>
+
+</ion-content>

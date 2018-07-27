@@ -4,6 +4,16 @@
   <ion-navbar>
   </ion-navbar>
 
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="divisionFilter" (ionChange)="filterDivision($event)">
+      <ion-segment-button value="division">
+        División
+      </ion-segment-button>
+      <ion-segment-button value="all">
+        Todas Divisiones
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 
@@ -22,42 +32,42 @@
                 </ion-col>
             </ion-row>
             <ion-row>
-                <ion-col>
-                    <h4>Wins</h4>
+                <ion-col text-center col-3>
+                    <h4>Victorias</h4>
                 </ion-col>
-                <ion-col>
-                    <h4>Losses</h4>
+                <ion-col text-center col-3>
+                    <h4>Derrotas</h4>
                 </ion-col>
-                <ion-col>
+                <ion-col text-center>
                     <h4>Pct</h4>
                 </ion-col>
-                <ion-col>
+                <ion-col text-center>
                     <h4>PF</h4>
                 </ion-col>
-                <ion-col>
+                <ion-col text-center>
                     <h4>PA</h4>
                 </ion-col>
-                <ion-col>
-                    <h4>Diff</h4>
+                <ion-col text-center>
+                    <h4>Dif</h4>
                 </ion-col>
             </ion-row>
             <ion-row>
-                <ion-col>
+                <ion-col col-3 text-center>
                     <h4>{{team.wins}}</h4>
                 </ion-col>
-                <ion-col>
+                <ion-col col-3 text-center>
                     <h4>{{team.losses}}</h4>
                 </ion-col>
-                <ion-col>
+                <ion-col text-center>
                     <h4>{{team.winningPct}}</h4>
                 </ion-col>
-                <ion-col>
+                <ion-col text-center>
                     <h4>{{team.pointsFor}}</h4>
                 </ion-col>
-                <ion-col>
+                <ion-col text-center>
                     <h4>{{team.pointsAgainst}}</h4>
                 </ion-col>
-                <ion-col>
+                <ion-col text-center>
                     <h4>{{team.pointsDiff}}</h4>
                 </ion-col>
             </ion-row>
