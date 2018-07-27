@@ -22,17 +22,25 @@ export class StandingsPage {
     this.team = this.navParams.data;
     let tourneyData = this.eliteApi.getCurrentTourney();
     this.standings = tourneyData.standings;
-
-    this.allStandings = 
+    this.allStandings = tourneyData.standings;
+/*     this.allStandings = 
       _.chain(this.standings)
         .groupBy('division')
         .toPairs()
         .map(item => _.zipObject(['divisionName', 'divisionTeams'], item))
         .value();
-      }
+*/
+    }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad StandingsPage');
+  }
+
+  getHeader(record, recordIndex, records){
+    if(recordIndex === 0 || record.division !== records[recordIndex - 1].division){
+      return record.division;
+    }
+    return null;
   }
 
 }

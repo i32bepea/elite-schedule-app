@@ -22,7 +22,7 @@
 
 <ion-content>
 
-  <ion-card *ngIf="!favorites">
+  <ion-card *ngIf="favorites.length === 0">
     <ion-card-header class="my-teams-header">
       No se sigue a ningún equipo
     </ion-card-header>
@@ -40,7 +40,7 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card *ngIf="favorites">
+  <ion-card *ngIf="favorites.length != 0">
 
     <ion-list>
       <ion-list-header class="my-teams-header">Equipos seguidos</ion-list-header>

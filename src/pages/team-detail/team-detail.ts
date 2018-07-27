@@ -14,6 +14,7 @@ import {
 import moment from 'moment';
 import * as _ from 'lodash';
 import { GamePage } from '../game/game';
+import { UserSettings } from '../../providers/user-settings/user-settings';
 
 
 @Component({
@@ -36,35 +37,41 @@ export class TeamDetailPage {
     private toastController: ToastController,
     public navCtrl: NavController,
     public navParams: NavParams,
+    private userSettings: UserSettings,
     private eliteApi: EliteApi) {
-    
-      this.team = this.navParams.data;
-      this.tourneyData = this.eliteApi.getCurrentTourney();
   
-      this.games = _.chain(this.tourneyData.games)
-                    .filter(g => g.team1Id === this.team.id || g.team2Id === this.team.id)
-                    .map(g => {
-                        let isTeam1 = (g.team1Id === this.team.id);
-                        let opponentName = isTeam1 ? g.team2 : g.team1;
-                        let scoreDisplay = this.getScoreDisplay(isTeam1, g.team1Score, g.team2Score);
-                        return {
-                            gameId: g.id,
-                            opponent: opponentName,
-                            time: Date.parse(g.time),
-                            location: g.location,
-                            locationUrl: g.locationUrl,
-                            scoreDisplay: scoreDisplay,
-                            homeAway: (isTeam1 ? "vs." : "at")
-                        };
-                    })
-                    .value();
-      
-      this.allGames = this.games;          
-      this.teamStanding = _.find(this.tourneyData.standings, { 'teamId': this.team.id });  
+      this.initialize();
     }
+  
+  initialize(){
+    this.team = this.navParams.data;
+    this.tourneyData = this.eliteApi.getCurrentTourney();
+
+    this.games = _.chain(this.tourneyData.games)
+                  .filter(g => g.team1Id === this.team.id || g.team2Id === this.team.id)
+                  .map(g => {
+                      let isTeam1 = (g.team1Id === this.team.id);
+                      let opponentName = isTeam1 ? g.team2 : g.team1;
+                      let scoreDisplay = this.getScoreDisplay(isTeam1, g.team1Score, g.team2Score);
+                      return {
+                          gameId: g.id,
+                          opponent: opponentName,
+                          time: Date.parse(g.time),
+                          location: g.location,
+                          locationUrl: g.locationUrl,
+                          scoreDisplay: scoreDisplay,
+                          homeAway: (isTeam1 ? "vs." : "at")
+                      };
+                  })
+                  .value();
+    
+    this.allGames = this.games;          
+    this.teamStanding = _.find(this.tourneyData.standings, { 'teamId': this.team.id });  
+
+  }  
 
   ionViewDidLoad(){
-
+    this.userSettings.isFavoriteTeam(this.team.id.toString()).then(value => this.isFollowing = value);
   }
 
   dateChanged() {
@@ -104,19 +111,20 @@ export class TeamDetailPage {
     if(this.isFollowing){
       let confirm = this.alertController.create({
         title: '¿Dejar de seguir?',
-        message: '¿Esta seguro de que quiere dejar de seguir al equipo?',
+        message: '¿Esta seguro de que quiere dejar de seguir a este equipo?',
         buttons: [
          {
-           text: 'Si',
-           handler: () => {
-             this.isFollowing = false;
+            text: 'Si',
+            handler: () => {
+              this.isFollowing = false;
+              this.userSettings.unfavoriteTeam(this.team);
 
-             let toast = this.toastController.create({
-               message: 'Has dejado de seguir a este equipo.',
-               duration: 2000,
-               position: 'top'
-             });
-             toast.present();
+              let toast = this.toastController.create({
+              message: 'Has dejado de seguir a este equipo.',
+              duration: 1500,
+              position: 'top'
+            });
+            toast.present();
            }
          },
          { text: 'No' }
@@ -127,13 +135,23 @@ export class TeamDetailPage {
     else{
       this.isFollowing = true;
 
+      this.userSettings.favoriteTeam(this.team, this.tourneyData.tournament.id, this.tourneyData.tournament.name);
+
       let toast = this.toastController.create({
         message: 'Ahora sigues a este equipo.',
-        duration: 2000,
+        duration: 1500,
         position: 'top'
       });
       toast.present();
     }
+  }
+
+  refreshAll(refresher){
+    this.eliteApi.refreshCurrentTourney().subscribe(() => {
+      refresher.complete();
+      this.initialize();
+      this.ionViewDidLoad();
+    });
   }
 
 }
