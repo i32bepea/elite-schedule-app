@@ -3,14 +3,18 @@ import {
 } from '@angular/core';
 import {
   NavController,
-  NavParams
+  NavParams,
+  AlertController,
+  ToastController
 } from 'ionic-angular';
 import {
   EliteApi
 } from '../../providers/elite-api/elite-api';
 
+import moment from 'moment';
 import * as _ from 'lodash';
 import { GamePage } from '../game/game';
+
 
 @Component({
   selector: 'page-team-detail',
@@ -18,16 +22,22 @@ import { GamePage } from '../game/game';
 })
 export class TeamDetailPage {
 
+  public allGames: any[];
+  public dateFilter = "";
+  public isFollowing = false;
   public games: any[];
   public team: any;
   public teamStanding: any = {};
   private tourneyData: any;
+  public useDateFilter = false;
 
   constructor(
+    private alertController: AlertController,
+    private toastController: ToastController,
     public navCtrl: NavController,
     public navParams: NavParams,
     private eliteApi: EliteApi) {
-      
+    
       this.team = this.navParams.data;
       this.tourneyData = this.eliteApi.getCurrentTourney();
   
@@ -49,12 +59,22 @@ export class TeamDetailPage {
                     })
                     .value();
       
+      this.allGames = this.games;          
       this.teamStanding = _.find(this.tourneyData.standings, { 'teamId': this.team.id });  
     }
 
-    ionViewDidLoad(){
+  ionViewDidLoad(){
 
+  }
+
+  dateChanged() {
+    if(this.useDateFilter && this.dateFilter != ""){
+      this.games = _.filter(this.allGames, g => moment(g.time).isSame(this.dateFilter, 'day'));
     }
+    else{
+      this.games = this.allGames;
+    }
+  }
 
   getScoreDisplay(isTeam1, team1Score, team2Score) {
     if (team1Score && team2Score) {
@@ -70,6 +90,50 @@ export class TeamDetailPage {
   gameClicked($event, game){
     let sourceGame = this.tourneyData.games.find(g => g.id === game.gameId);
     this.navCtrl.push(GamePage, sourceGame);
+  }
+
+  getScoreWorL(game) {
+    return game.scoreDisplay ? game.scoreDisplay[0] : '';
+  }
+
+  getScoreDisplayBadgeClass(game) {
+    return game.scoreDisplay.indexOf("W:") === 0 ? 'primary' : 'danger';
+  }
+
+  toggleFollow(){
+    if(this.isFollowing){
+      let confirm = this.alertController.create({
+        title: '¿Dejar de seguir?',
+        message: '¿Esta seguro de que quiere dejar de seguir al equipo?',
+        buttons: [
+         {
+           text: 'Si',
+           handler: () => {
+             this.isFollowing = false;
+
+             let toast = this.toastController.create({
+               message: 'Has dejado de seguir a este equipo.',
+               duration: 2000,
+               position: 'top'
+             });
+             toast.present();
+           }
+         },
+         { text: 'No' }
+        ]
+      });
+      confirm.present();
+    }
+    else{
+      this.isFollowing = true;
+
+      let toast = this.toastController.create({
+        message: 'Ahora sigues a este equipo.',
+        duration: 2000,
+        position: 'top'
+      });
+      toast.present();
+    }
   }
 
 }

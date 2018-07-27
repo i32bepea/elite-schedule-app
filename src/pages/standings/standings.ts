@@ -29,14 +29,10 @@ export class StandingsPage {
         .toPairs()
         .map(item => _.zipObject(['divisionName', 'divisionTeams'], item))
         .value();
-    
-    console.log("allStandings", this.allStandings);
-  }
+      }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad StandingsPage');
-    console.log("allStandings", this.allStandings);
-
   }
 
 }
