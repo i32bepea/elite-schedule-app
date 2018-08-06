@@ -30,7 +30,7 @@ import { MapPage } from '../pages/map/map';
     TournamentsPage,
     StandingsPage,
     TeamHomePage,
-    MapPage,
+    MapPage
   ],
   imports: [
     BrowserModule,
@@ -49,7 +49,7 @@ import { MapPage } from '../pages/map/map';
     TournamentsPage,
     StandingsPage,
     TeamHomePage,
-    MapPage,
+    MapPage
   ],
   providers: [
     StatusBar,

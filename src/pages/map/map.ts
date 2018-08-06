@@ -2,12 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { EliteApi } from '../../providers/elite-api/elite-api';
 
-/**
- * Generated class for the MapPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+declare var window: any;
 
 @Component({
   selector: 'page-map',
@@ -32,6 +27,10 @@ export class MapPage {
       zoom: 12,
       markerLabel: games.location 
     };
+  }
+
+  goToDirections(){
+    window.location = `geo:${this.map.lat},${this.map.lng};u=35`;
   }
 
 }

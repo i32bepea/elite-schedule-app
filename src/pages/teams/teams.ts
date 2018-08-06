@@ -39,6 +39,7 @@ ionViewDidLoad(){
 
         this.teams = this.allTeamDivisions;
         loader.dismiss();
+        console.log(this.allTeamDivisions);
       });
     });
     
